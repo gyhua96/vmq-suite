@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VMQ Payment</title>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get("orderId") || "";
+      const accessToken = params.get("accessToken") || "";
+      window.location.replace("/vmq/pay?orderId=" + encodeURIComponent(orderId)
+        + "&accessToken=" + encodeURIComponent(accessToken));
+    </script>
+  </head>
+  <body>
+    Redirecting to payment page...
+  </body>
+</html>

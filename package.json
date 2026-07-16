@@ -1,0 +1,12 @@
+{
+  "name": "vmq-suite",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.29.3",
+  "scripts": {
+    "dev:web": "pnpm --filter vmq-web dev",
+    "build:web": "pnpm --filter vmq-web build",
+    "lint:web": "pnpm --filter vmq-web lint"
+  }
+}
+

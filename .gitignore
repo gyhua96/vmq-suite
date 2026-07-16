@@ -1,0 +1,38 @@
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+apps/vmq-android/signing/
+
+# Java / Maven
+**/target/
+*.class
+
+# Node / Next.js
+**/node_modules/
+**/.next/
+**/out/
+**/dist/
+
+# Android / Gradle
+**/.gradle/
+**/build/
+apps/vmq-android/local.properties
+*.apk
+*.aab
+
+# Runtime data
+data/
+logs/
+*.log
+

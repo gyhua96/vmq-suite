@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vmq}
+      POSTGRES_USER: ${POSTGRES_USER:-vmq}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  vmq-api:
+    build:
+      context: ./apps/vmq-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Shanghai
+      SERVER_PORT: 50126
+      VMQ_ADMIN_USER: ${VMQ_ADMIN_USER:-admin}
+      VMQ_ADMIN_PASSWORD: ${VMQ_ADMIN_PASSWORD:?Set VMQ_ADMIN_PASSWORD in .env}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-vmq}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-vmq}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+      SPRING_FLYWAY_ENABLED: ${SPRING_FLYWAY_ENABLED:-false}
+    expose:
+      - "50126"
+
+  vmq-web:
+    build:
+      context: .
+      dockerfile: apps/vmq-web/Dockerfile
+      args:
+        NEXT_PUBLIC_VMQ_API_BASE: /vmq-api
+        NEXT_PUBLIC_VMQ_BASE_PATH: /vmq
+        VMQ_API_PROXY_URL: http://vmq-api:50126
+    restart: unless-stopped
+    depends_on:
+      - vmq-api
+    expose:
+      - "50125"
+
+  gateway:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - vmq-api
+      - vmq-web
+    volumes:
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "${VMQ_HTTP_PORT:-8080}:80"
+
+volumes:
+  postgres_data:

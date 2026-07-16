@@ -1,0 +1,6 @@
+VMQ Suite is based on VMQ, originally released under the MIT License.
+
+This repository contains later compatibility, security, deployment, Android,
+Spring Boot, PostgreSQL, and web console changes. The original copyright and
+license notice are preserved in LICENSE.
+

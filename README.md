@@ -20,6 +20,26 @@ VMQ Suite 是一套个人收款通知监听方案，包含 Spring Boot 服务端
         -> 商户 notifyUrl 回调
 ```
 
+## 界面预览
+
+以下截图来自 VMQ Suite 的自部署示例环境，用于展示管理后台的核心页面。截图已避开系统设置、通讯密钥、配置二维码和订单明细等敏感内容；部署时请替换为你自己的地址和凭据。
+
+### 交易控制台
+
+![VMQ 交易控制台](docs/images/dashboard.png)
+
+### 订单管理
+
+![订单管理与筛选](docs/images/orders.png)
+
+### 微信固定二维码
+
+![微信固定二维码管理](docs/images/wechat-qrcode.png)
+
+### Android 监听端
+
+![Android 监听端状态](docs/images/monitor.png)
+
 ## 快速启动
 
 需要 Docker 和 Docker Compose v2。
